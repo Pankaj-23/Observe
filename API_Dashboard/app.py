@@ -10,7 +10,7 @@ def github_user():
   
   if response.status_code == 200:
     data = response.json()
-    return render_template(dashboard.html, user=data)
+    return render_template("dashboard.html", user=data)
   else:
     return f"Error: {reponse.status_code}"
 
