@@ -1,0 +1,36 @@
+---
+- name: Deploy Flask Github Dashboard
+  hosts: localhost
+  become: yes
+
+  vars:
+    repo_url: "https://github.com/Pankaj-23/Observe.git"
+    repo_dest: "/tmp/github_dashboard"
+    venv_path: "/tmp/github_dashboard/venv"
+
+  tasks:
+    - name: Install system packages (Python, pip, git)
+      apt:
+        name: ["python3-pip","python3-venv", "git"]
+        state: present
+        update_cache: yes
+
+    - name: Clone Github Repository
+      git:
+        repo: "{{repo_url}}"
+        dest: "{{repo_dest}}"
+        force: yes
+
+    - name: Create Python Virtual Environment
+      command: "python3 -m venv {{venv_path}}"
+      args:
+        creates: "{{venv_path}}/bin/activate"
+
+    - name: Install Flask and Requests inside virtualenv
+      command: "{{venv_path}}/bin/pip install flask requests"
+
+    - name: Run Flask App in background using virtualenv
+      shell: |
+        nohup {{venv_path}}/bin/python3 {{repo_dest}}/api_dashboard/app.py > /tmp/flask.log 2>&1 &
+      args:
+        executable: /bin/bash
