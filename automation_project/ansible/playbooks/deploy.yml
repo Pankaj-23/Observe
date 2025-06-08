@@ -1,7 +1,7 @@
 ---
 - name: Example deployment
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Ping test
-      ping:
+      ansible.builtin.ping:
