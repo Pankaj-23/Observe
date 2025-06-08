@@ -37,9 +37,9 @@ jobs:
         run: |
           pip install ansible ansible-lint
       - name: Lint playbooks
-        run: ansible-lint ansible/playbooks/deploy.yml
+        run: ansible-lint automation_project/ansible/playbooks/deploy.yml
       - name: Syntax check
-        run: ansible-playbook --syntax-check -i ansible/inventory/dev ansible/playbooks/deploy.yml
+        run: ansible-playbook --syntax-check -i automation_project/ansible/inventory/dev automation_project/ansible/playbooks/deploy.yml
 
   deploy-dev:
     runs-on: ubuntu-latest
@@ -49,4 +49,4 @@ jobs:
       - name: Install Ansible
         run: pip install ansible
       - name: Deploy to dev
-        run: ansible-playbook -i ansible/inventory/dev ansible/playbooks/deploy.yml
+        run: ansible-playbook -i automation_project/ansible/inventory/dev automation_project/ansible/playbooks/deploy.yml
