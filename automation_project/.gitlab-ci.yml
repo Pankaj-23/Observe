@@ -1,0 +1,32 @@
+stages:
+  - lint
+  - test
+  - deploy
+
+lint_python:
+  stage: lint
+  script:
+    - pip install flake8
+    - flake8 scripts/ --max-line-length=120
+
+lint_ansible:
+  stage: lint
+  script:
+    - pip install ansible ansible-lint
+    - ansible-lint ansible/playbooks/deploy.yml
+
+unit_test_python:
+  stage: test
+  script:
+    - pip install pytest
+    - pytest tests/
+
+syntax_check_ansible:
+  stage: test
+  script:
+    - ansible-playbook ansible/playbooks/deploy.yml --syntax-check
+
+deploy_to_dev:
+  stage: deploy
+  script:
+    - ansible-playbook -i ansible/inventory/dev ansible/playbooks/deploy.yml
