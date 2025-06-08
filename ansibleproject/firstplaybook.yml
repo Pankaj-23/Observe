@@ -1,0 +1,10 @@
+---
+- name: Example "Hello" Playbook
+  hosts: local
+  gather_facts: false
+
+  tasks:
+    - name: Show a greeting message
+      debug:
+        msg: "Hello this is my first Ansible playbook on WSL"
+
