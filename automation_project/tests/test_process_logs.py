@@ -1,5 +1,5 @@
 import pandas as pd
-from scripts.process_logs import analyze_logs
+from automation_project.scripts.process_logs import analyze_logs
 
 
 def test_analyze_logs():
