@@ -1,7 +1,0 @@
----
-- name: Example deployment
-  hosts: all
-  become: yes
-  tasks:
-    - name: Ping test
-      ping:
