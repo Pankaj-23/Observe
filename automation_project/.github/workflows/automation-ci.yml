@@ -1,0 +1,50 @@
+name: Automation CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lint-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pip install flake8
+      - name: Lint scripts
+        run: flake8 scripts/ --max-line-length=120
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install test dependencies
+        run: |
+          pip install pytest pandas requests
+      - name: Run tests
+        run: pytest tests/
+
+  ansible-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Ansible and Ansible-lint
+        run: |
+          pip install ansible ansible-lint
+      - name: Lint playbooks
+        run: ansible-lint ansible/playbooks/deploy.yml
+      - name: Syntax check
+        run: ansible-playbook --syntax-check -i ansible/inventory/dev ansible/playbooks/deploy.yml
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: [lint-python, unit-test, ansible-check]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Ansible
+        run: pip install ansible
+      - name: Deploy to dev
+        run: ansible-playbook -i ansible/inventory/dev ansible/playbooks/deploy.yml
