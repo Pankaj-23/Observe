@@ -24,8 +24,10 @@ jobs:
       - name: Install test dependencies
         run: |
           pip install pytest pandas requests
-      - name: Run tests
-        run: pytest automation_project/tests/
+      - name: Set PYTHONPATH and run tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          pytest automation_project/tests/
 
   ansible-check:
     runs-on: ubuntu-latest
