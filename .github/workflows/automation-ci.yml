@@ -25,7 +25,7 @@ jobs:
         run: |
           pip install pytest pandas requests
       - name: Run tests
-        run: pytest tests/
+        run: pytest automation_project/tests/
 
   ansible-check:
     runs-on: ubuntu-latest
