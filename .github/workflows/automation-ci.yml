@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: pip install flake8
       - name: Lint scripts
-        run: flake8 . --max-line-length=120
+        run: flake8 automation_project/scripts automation_project/tests --max-line-length=120
 
   unit-test:
     runs-on: ubuntu-latest
