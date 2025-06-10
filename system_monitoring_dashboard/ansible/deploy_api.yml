@@ -1,0 +1,29 @@
+---
+- name: Deploy REST API using Docker
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Copy app folder to remote
+      copy:
+        src: ../app
+        dest: /opt/observe
+
+    - name: Build Docker image
+      command: docker build -t system-api .
+      args:
+        chdir: /opt/observe/app
+
+    - name: Run Docker container
+      docker_container:
+        name: system-api
+        image: system-api
+        state: started
+        ports:
+          - "5000:5000"
