@@ -3,6 +3,13 @@ import psutil
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return jsonify({
+        "message": "System Monitoring API",
+        "available_routes": ["/api/system"]
+    })
+
 @app.route('/api/system')
 def system():
     return jsonify({
