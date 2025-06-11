@@ -1,0 +1,2 @@
+GIT_USERNAME - Pankaj-23
+PAT (Personal Access Token)- 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
