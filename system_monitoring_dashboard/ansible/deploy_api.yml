@@ -1,29 +1,40 @@
 ---
 - name: Deploy REST API using Docker
-  hosts: web
-  become: yes
-
+  hosts: all
+  become: true
   tasks:
+
     - name: Install Docker
       apt:
         name: docker.io
         state: present
-        update_cache: yes
+        update_cache: true
+
+    - name: Ensure python3-requests is installed on remote host
+      apt:
+        name: python3-requests
+        state: present
+        update_cache: true
 
     - name: Copy app folder to remote
       copy:
-        src: ../app
-        dest: /opt/observe
+        src: ../app/
+        dest: /opt/system_monitoring_api/
+        owner: root
+        group: root
+        mode: '0755'
 
     - name: Build Docker image
-      command: docker build -t system-api .
-      args:
-        chdir: /opt/observe/app
+      community.docker.docker_image:
+        name: system_monitoring_api
+        build:
+          path: /opt/system_monitoring_api/
 
     - name: Run Docker container
-      docker_container:
-        name: system-api
-        image: system-api
+      community.docker.docker_container:
+        name: system_monitoring_api
+        image: system_monitoring_api
         state: started
-        ports:
+        restart_policy: always
+        published_ports:
           - "5000:5000"
