@@ -1,0 +1,18 @@
+---
+# Path to requirements.txt file
+requirements_file: "{{ playbook_dir }}/../../requirements.txt"
+
+# Path to Python virtual environment
+virtualenv_path: /tmp/meraki_env
+
+# Python interpreter inside the virtualenv
+python_exec: "{{ virtualenv_path }}/bin/python3"
+
+# Base path for all Python scripts
+script_base: "{{ playbook_dir }}/../../scripts"
+
+# Individual script paths
+script_health: "{{ script_base }}/fetch_device_health.py"
+script_clients: "{{ script_base }}/fetch_client_usage.py"
+script_analysis: "{{ script_base }}/analyze_metrics.py"
+script_alerts: "{{ script_base }}/send_alert.py"
