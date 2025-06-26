@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+
+    environment {
+        PYTHON_ENV = 'meraki-env'
+    }
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    stages {
+
+        stage('📦 Setup Python Environment') {
+            steps {
+                echo "Setting up Python environment..."
+                sh '''
+                    python3 -m venv ${PYTHON_ENV}
+                    . ${PYTHON_ENV}/bin/activate
+                    pip install --upgrade pip
+                    pip install -r meraki_automation/requirements.txt
+                '''
+            }
+        }
+
+        stage('📡 Fetch Device Health Data') {
+            steps {
+                echo "Running fetch_device_health.py..."
+                sh '''
+                    . ${PYTHON_ENV}/bin/activate
+                    python meraki_automation/scripts/fetch_device_health.py
+                '''
+            }
+        }
+
+        stage('📶 Fetch Client Usage Data') {
+            steps {
+                echo "Running fetch_client_usage.py..."
+                sh '''
+                    . ${PYTHON_ENV}/bin/activate
+                    python meraki_automation/scripts/fetch_client_usage.py
+                '''
+            }
+        }
+
+        stage('🧠 Analyze Metrics') {
+            steps {
+                echo "Analyzing collected metrics..."
+                sh '''
+                    . ${PYTHON_ENV}/bin/activate
+                    python meraki_automation/scripts/analyze_metrics.py
+                '''
+            }
+        }
+
+        stage('🚨 Send Alerts (Console Log)') {
+            steps {
+                echo "Simulating alerting..."
+                sh '''
+                    . ${PYTHON_ENV}/bin/activate
+                    python meraki_automation/scripts/send_alert.py
+                '''
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "✅ Meraki Monitoring Pipeline completed successfully."
+        }
+        failure {
+            echo "❌ Pipeline failed. Check logs for errors."
+        }
+    }
+}
