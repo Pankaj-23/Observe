@@ -1,0 +1,6 @@
+Network Name,Device Name,Model,Serial,Interface,Status,IP,Public IP,Gateway,DNS,Latency,Loss
+Main Office,Core Switch,MS220,Q2XX-1234-WXYZ,wan1,active,10.0.0.1,203.0.113.10,10.0.0.254,8.8.8.8,178,3.1
+Main Office,Access Point,MR33,ABC1-2345-DEFG,wan1,active,10.0.0.2,203.0.113.11,10.0.0.254,8.8.8.8,22,0.0
+Branch A,Firewall,MX68,ZYX9-8765-QRST,wan1,active,192.168.1.1,198.51.100.5,192.168.1.254,8.8.4.4,12,0.1
+Branch A,Backup Switch,MS120,LMNO-5566-WXYZ,wan1,active,192.168.1.2,198.51.100.6,192.168.1.254,8.8.4.4,199,4.2
+Branch B,AP2,MR42,PQRS-1111-TUVW,wan1,active,192.168.2.1,203.0.113.20,192.168.2.254,1.1.1.1,95,0.5
