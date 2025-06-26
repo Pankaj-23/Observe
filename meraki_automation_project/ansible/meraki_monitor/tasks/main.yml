@@ -1,0 +1,50 @@
+---
+- name: Ensure Python requirements are installed
+  pip:
+    requirements: "{{ playbook_dir }}/../../requirements.txt"
+    virtualenv: /tmp/meraki_env
+    virtualenv_command: python3 -m venv
+    executable: pip3
+
+- name: Run Meraki device health check script
+  command: >
+    /tmp/meraki_env/bin/python3
+    {{ playbook_dir }}/../../scripts/fetch_device_health.py
+  register: device_health_output
+  changed_when: false
+
+- name: Run Meraki client usage check script
+  command: >
+    /tmp/meraki_env/bin/python3
+    {{ playbook_dir }}/../../scripts/fetch_client_usage.py
+  register: client_usage_output
+  changed_when: false
+
+- name: Run analysis script
+  command: >
+    /tmp/meraki_env/bin/python3
+    {{ playbook_dir }}/../../scripts/analyze_metrics.py
+  register: analysis_output
+  changed_when: false
+
+- name: Simulate alert dispatch (console output)
+  command: >
+    /tmp/meraki_env/bin/python3
+    {{ playbook_dir }}/../../scripts/send_alert.py
+  register: alert_output
+  changed_when: false
+
+- name: Show results
+  debug:
+    msg: |
+      Device Check Output:
+      {{ device_health_output.stdout }}
+
+      Client Usage Output:
+      {{ client_usage_output.stdout }}
+
+      Analysis Output:
+      {{ analysis_output.stdout }}
+
+      Alerts:
+      {{ alert_output.stdout }}
