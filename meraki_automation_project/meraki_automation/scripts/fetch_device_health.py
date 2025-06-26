@@ -58,6 +58,9 @@ def collect_health_data():
     print(f"Found {len(networks)} networks. Collecting device health data...\n")
 
     for network in networks:
+        print("RAW network object:", network)
+        print("TYPE:", type(network))
+        
         if not isinstance(network, dict):
             continue
 
