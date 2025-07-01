@@ -12,7 +12,9 @@ import os
 #BASE_URL = config["base_url"]
 #ORG_ID = config["org_id"]
 
-API_KEY = os.environ.get("MERAKI_API_KEY")
+#API_KEY = os.environ.get("MERAKI_API_KEY")
+
+API_KEY = "6fac7cc5f112b56df26fd11117cc6c2b5b9a38b0"
 BASE_URL = "https://api.meraki.com/api/v1"
 ORG_ID = "549236"
 
