@@ -4,13 +4,22 @@ import json
 import os
 
 # Load configuration from config.json
-config_path = os.path.join(os.path.dirname(__file__), '../config/config.json')
-with open(config_path) as f:
-    config = json.load(f)
+# config_path = os.path.join(os.path.dirname(__file__), '../config/config.json')
+# with open(config_path) as f:
+#    config = json.load(f)
 
-API_KEY = config["api_key"]
-BASE_URL = config["base_url"]
-ORG_ID = config["org_id"]
+#API_KEY = config["api_key"]
+#BASE_URL = config["base_url"]
+#ORG_ID = config["org_id"]
+
+API_KEY = os.environ.get("MERAKI_API_KEY")
+BASE_URL = "https://api.meraki.com/api/v1"
+ORG_ID = "549236"
+
+# Safety check for missing API key
+if not API_KEY:
+    print("[ERROR] MERAKI_API_KEY environment variable not set.")
+    sys.exit(1)
 
 HEADERS = {
     "X-Cisco-Meraki-API-Key": API_KEY,
