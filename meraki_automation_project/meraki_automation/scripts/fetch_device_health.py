@@ -14,7 +14,7 @@ import os
 
 #API_KEY = os.environ.get("MERAKI_API_KEY")
 
-API_KEY = "6bec40cf957de430a6f1f2baa056b99a4fac9ea0"
+API_KEY = "497ae5b752f044b36b85267c4ff8853fdca6f862"
 BASE_URL = "https://api.meraki.com/api/v1"
 ORG_ID = "549236"
 
