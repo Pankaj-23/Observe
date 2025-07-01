@@ -28,7 +28,7 @@ jobs:
         python meraki_automation_project/meraki_automation/scripts/fetch_device_health.py
 
     - name: 📁 Upload CSV Report as Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: device-health-report
         path: meraki_automation_project/meraki_automation/reports/device_health_report.csv
