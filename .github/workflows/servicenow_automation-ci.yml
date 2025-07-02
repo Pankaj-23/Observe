@@ -25,7 +25,7 @@ jobs:
           pip install flake8
 
       - name: Lint scripts
-        run: flake8 automation_Project/scripts/ --max-line-length=120
+        run: flake8 AnsibleServicenow/automation_Project/scripts/ --max-line-length=120
 
   test-python:
     runs-on: ubuntu-latest
@@ -35,11 +35,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r automation_Project/requirements.txt
+          pip install -r AnsibleServicenow/automation_Project/requirements.txt
 
       - name: Run tests
         run: |
-          python -m unittest automation_Project/tests/test_servicenow_api.py
+          python -m unittest AnsibleServicenow/automation_Project/tests/test_servicenow_api.py
 
   ansible-syntax-check:
     runs-on: ubuntu-latest
@@ -52,11 +52,11 @@ jobs:
 
       - name: Lint playbook
         run: |
-          ansible-lint automation_Project/ansible/playbooks/incident_remediation.yml
+          ansible-lint AnsibleServicenow/automation_Project/ansible/playbooks/incident_remediation.yml
 
       - name: Syntax check
         run: |
-          ansible-playbook automation_Project/ansible/playbooks/incident_remediation.yml --syntax-check
+          ansible-playbook AnsibleServicenow/automation_Project/ansible/playbooks/incident_remediation.yml --syntax-check
 
   deploy-playbook:
     runs-on: ubuntu-latest
@@ -73,4 +73,4 @@ jobs:
           SNOW_USER: ${{ secrets.SN_USERNAME }}
           SNOW_PASSWORD: ${{ secrets.SN_PASSWORD }}
         run: |
-          ansible-playbook automation_Project/ansible/playbooks/incident_remediation.yml
+          ansible-playbook AnsibleServicenow/automation_Project/ansible/playbooks/incident_remediation.yml
