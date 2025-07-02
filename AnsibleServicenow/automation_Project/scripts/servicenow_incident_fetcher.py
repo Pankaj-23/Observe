@@ -3,12 +3,13 @@ import requests
 from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
 
+# Load environment variables from .env
 load_dotenv()
 
-# Load credentials from environment variables
-SN_INSTANCE = os.getenv("SERVICENOW_INSTANCE", "https://dev12345.service-now.com")
-SN_USERNAME = os.getenv("SERVICENOW_USER", "admin")
-SN_PASSWORD = os.getenv("SERVICENOW_PASSWORD", "your_password")
+# Load credentials from updated environment variables
+SN_INSTANCE = os.getenv("SN_INSTANCE", "https://dev12345.service-now.com")
+SN_USERNAME = os.getenv("SN_USERNAME", "admin")
+SN_PASSWORD = os.getenv("SN_PASSWORD", "your_password")
 
 # Define the endpoint
 INCIDENT_API_URL = f"{SN_INSTANCE}/api/now/table/incident"
