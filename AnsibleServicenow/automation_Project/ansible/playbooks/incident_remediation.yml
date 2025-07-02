@@ -3,9 +3,9 @@
   hosts: localhost
   gather_facts: no
   vars:
-    servicenow_instance: "https://dev292120.service-now.com"
-    servicenow_user: "{{ lookup('env', 'SNOW_USER') }}"
-    servicenow_password: "{{ lookup('env', 'SNOW_PASSWORD') }}"
+    SN_INSTANCE: "https://dev292120.service-now.com"
+    SN_USERNAME: "{{ lookup('env', 'SNOW_USER') }}"
+    SN_PASSWORD: "{{ lookup('env', 'SNOW_PASSWORD') }}"
     short_description: "Automated disk space alert"
     description: "Disk space exceeded 90% on host xyz.example.com"
 
