@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: no
   vars:
-    servicenow_instance: "https://dev12345.service-now.com"
+    servicenow_instance: "https://dev292120.service-now.com"
     servicenow_user: "{{ lookup('env', 'SNOW_USER') }}"
     servicenow_password: "{{ lookup('env', 'SNOW_PASSWORD') }}"
     short_description: "Automated disk space alert"
