@@ -1,0 +1,11 @@
+---
+servicenow_instance: "https://dev12345.service-now.com"
+servicenow_user: "admin"
+servicenow_password: "admin_password"
+
+incident_short_description: "Automated: Network Device Alert"
+incident_description: "Automation detected an issue with a network device and created this incident in ServiceNow."
+incident_category: "network"
+incident_subcategory: "connectivity"
+incident_impact: "2"
+incident_urgency: "1"
