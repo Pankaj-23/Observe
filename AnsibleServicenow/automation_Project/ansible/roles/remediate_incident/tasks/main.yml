@@ -1,0 +1,21 @@
+---
+- name: Create an incident in ServiceNow
+  uri:
+    url: "{{ servicenow_instance }}/api/now/table/incident"
+    method: POST
+    user: "{{ servicenow_user }}"
+    password: "{{ servicenow_password }}"
+    force_basic_auth: yes
+    status_code: 201
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+    body_format: json
+    body:
+      short_description: "{{ short_description }}"
+      description: "{{ description }}"
+  register: incident_response
+
+- name: Show the incident number created
+  debug:
+    msg: "Created Incident ID: {{ incident_response.json.result.number }}"
