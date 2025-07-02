@@ -1,0 +1,7 @@
+---
+servicenow_instance: "https://dev12345.service-now.com"
+servicenow_user: "admin"
+servicenow_password: "admin_password"
+
+short_description: "Default Incident: Automation Triggered"
+description: "This is a default incident created by the Ansible automation role."
