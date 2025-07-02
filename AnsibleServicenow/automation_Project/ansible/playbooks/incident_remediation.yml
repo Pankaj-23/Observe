@@ -12,10 +12,10 @@
   tasks:
     - name: Create incident in ServiceNow
       uri:
-        url: "{{ servicenow_instance }}/api/now/table/incident"
+        url: "{{ SN_INSTANCE }}/api/now/table/incident"
         method: POST
-        user: "{{ servicenow_user }}"
-        password: "{{ servicenow_password }}"
+        user: "{{ SN_USERNAME }}"
+        password: "{{ SN_PASSWORD }}"
         force_basic_auth: yes
         status_code: 201
         headers:
