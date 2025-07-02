@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: no
   vars:
-    servicenow_instance: "{{ lookup('env', 'SN_INSTANCE') }}"
+    servicenow_instance: "https://dev292120.service-now.com"
     servicenow_user: "{{ lookup('env', 'SN_USERNAME') }}"
     servicenow_password: "{{ lookup('env', 'SN_PASSWORD') }}"
     short_description: "Automated disk space alert"
@@ -12,10 +12,10 @@
   tasks:
     - name: Create incident in ServiceNow
       uri:
-        url: "{{ SN_INSTANCE }}/api/now/table/incident"
+        url: "{{ servicenow_instance }}/api/now/table/incident"
         method: POST
-        user: "{{ SN_USERNAME }}"
-        password: "{{ SN_PASSWORD }}"
+        user: "{{ servicenow_user }}"
+        password: "{{ servicenow_password }}"
         force_basic_auth: yes
         status_code: 201
         headers:
