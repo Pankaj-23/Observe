@@ -1,0 +1,32 @@
+---
+- name: Automated Incident Remediation via ServiceNow
+  hosts: localhost
+  gather_facts: no
+  vars:
+    servicenow_instance: "https://dev12345.service-now.com"
+    servicenow_user: "{{ lookup('env', 'SNOW_USER') }}"
+    servicenow_password: "{{ lookup('env', 'SNOW_PASSWORD') }}"
+    short_description: "Automated disk space alert"
+    description: "Disk space exceeded 90% on host xyz.example.com"
+
+  tasks:
+    - name: Create incident in ServiceNow
+      uri:
+        url: "{{ servicenow_instance }}/api/now/table/incident"
+        method: POST
+        user: "{{ servicenow_user }}"
+        password: "{{ servicenow_password }}"
+        force_basic_auth: yes
+        status_code: 201
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+        body_format: json
+        body:
+          short_description: "{{ short_description }}"
+          description: "{{ description }}"
+      register: incident_response
+
+    - name: Display created incident number
+      debug:
+        msg: "Created incident: {{ incident_response.json.result.number }}"
