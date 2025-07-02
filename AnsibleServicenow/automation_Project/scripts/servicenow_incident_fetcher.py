@@ -1,6 +1,9 @@
 import os
 import requests
 from requests.auth import HTTPBasicAuth
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Load credentials from environment variables
 SERVICENOW_INSTANCE = os.getenv("SERVICENOW_INSTANCE", "https://dev12345.service-now.com")
