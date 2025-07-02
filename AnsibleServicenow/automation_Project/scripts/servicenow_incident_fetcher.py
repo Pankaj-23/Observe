@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Load credentials from environment variables
-SERVICENOW_INSTANCE = os.getenv("SERVICENOW_INSTANCE", "https://dev12345.service-now.com")
-SERVICENOW_USER = os.getenv("SERVICENOW_USER", "admin")
-SERVICENOW_PASSWORD = os.getenv("SERVICENOW_PASSWORD", "your_password")
+SN_INSTANCE = os.getenv("SERVICENOW_INSTANCE", "https://dev12345.service-now.com")
+SN_USERNAME = os.getenv("SERVICENOW_USER", "admin")
+SN_PASSWORD = os.getenv("SERVICENOW_PASSWORD", "your_password")
 
 # Define the endpoint
-INCIDENT_API_URL = f"{SERVICENOW_INSTANCE}/api/now/table/incident"
+INCIDENT_API_URL = f"{SN_INSTANCE}/api/now/table/incident"
 
 # Optional filters (adjust as needed)
 FILTER = "state=1^priority=1"  # New and Priority 1 incidents
@@ -30,7 +30,7 @@ def fetch_incidents():
     try:
         response = requests.get(
             INCIDENT_API_URL,
-            auth=HTTPBasicAuth(SERVICENOW_USER, SERVICENOW_PASSWORD),
+            auth=HTTPBasicAuth(SN_USERNAME, SN_PASSWORD),
             headers=HEADERS,
             params=params
         )
