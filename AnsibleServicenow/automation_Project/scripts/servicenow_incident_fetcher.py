@@ -22,6 +22,8 @@ HEADERS = {
     "Accept": "application/json"
 }
 
+
+
 def fetch_incidents():
     params = {
         "sysparm_query": FILTER,
