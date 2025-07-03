@@ -2,9 +2,11 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from pathlib import Path
 from dotenv import load_dotenv
 
 # Load environment variables from .env
+env_path = Path(__file__).resolve().parents[2] / ".env"
 load_dotenv()
 
 print("[DEBUG] EMAIL_HOST:", os.getenv("EMAIL_HOST"))
