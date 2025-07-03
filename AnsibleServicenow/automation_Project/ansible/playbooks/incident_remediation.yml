@@ -1,7 +1,7 @@
 ---
 - name: Automated Incident Remediation via ServiceNow
   hosts: localhost
-  gather_facts: no
+  gather_facts: false
   vars:
     servicenow_instance: "https://dev292120.service-now.com"
     servicenow_user: "{{ lookup('env', 'SN_USERNAME') }}"
