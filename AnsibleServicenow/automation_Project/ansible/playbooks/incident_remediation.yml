@@ -11,12 +11,12 @@
 
   tasks:
     - name: Create incident in ServiceNow
-      uri:
+      ansible.builtin.uri:
         url: "{{ servicenow_instance }}/api/now/table/incident"
         method: POST
         user: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
-        force_basic_auth: yes
+        force_basic_auth: true
         status_code: 201
         headers:
           Content-Type: "application/json"
@@ -28,5 +28,5 @@
       register: incident_response
 
     - name: Display created incident number
-      debug:
+      ansible.builtin.debug:
         msg: "Created incident: {{ incident_response.json.result.number }}"
