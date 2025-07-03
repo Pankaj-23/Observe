@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ServiceNow Incident Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">ServiceNow Incident Metrics</h2>
+        <div class="row">
+            {% for state, count in counts.items() %}
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ state }}</h5>
+                        <p class="card-text display-4 text-center">{{ count }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <footer class="text-center mt-5">
+            <p class="text-muted">Incident data pulled live from ServiceNow</p>
+        </footer>
+    </div>
+</body>
+</html>
