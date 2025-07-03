@@ -35,7 +35,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r AnsibleServicenow/automation_Project/requirements.txt
+          pip install -r AnsibleServicenow/requirements.txt
 
       - name: Run tests
         run: |
