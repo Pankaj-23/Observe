@@ -7,6 +7,12 @@ from dotenv import load_dotenv
 # Load environment variables from .env
 load_dotenv()
 
+print("[DEBUG] EMAIL_HOST:", os.getenv("EMAIL_HOST"))
+print("[DEBUG] EMAIL_PORT:", os.getenv("EMAIL_PORT"))
+print("[DEBUG] EMAIL_USER:", os.getenv("EMAIL_USER"))
+print("[DEBUG] EMAIL_PASS:", os.getenv("EMAIL_PASS")[:4] + "****")  # hide full password
+print("[DEBUG] EMAIL_RECEIVER:", os.getenv("EMAIL_RECEIVER"))
+
 # Environment variables
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
