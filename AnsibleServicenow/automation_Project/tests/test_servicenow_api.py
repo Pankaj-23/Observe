@@ -1,53 +1,52 @@
 import os
+import unittest
 import requests
 from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load variables from .env
 load_dotenv()
 
-def test_servicenow_connection():
-    """
-    Test basic authentication and API response from ServiceNow instance.
-    """
-    instance = os.getenv("SN_INSTANCE")
-    user = os.getenv("SN_USERNAME")
-    password = os.getenv("SN_PASSWORD")
+class TestServiceNowAPI(unittest.TestCase):
 
-    assert instance is not None, "Missing SN_INSTANCE env variable"
-    assert user is not None, "Missing SN_USERNAME env variable"
-    assert password is not None, "Missing SN_PASSWORD env variable"
+    def setUp(self):
+        self.instance = os.getenv("SN_INSTANCE")
+        self.username = os.getenv("SN_USERNAME")
+        self.password = os.getenv("SN_PASSWORD")
 
-    url = f"{instance}/api/now/table/incident"
-    headers = {
-        "Accept": "application/json"
-    }
+        self.assertIsNotNone(self.instance, "Missing SN_INSTANCE env variable")
+        self.assertIsNotNone(self.username, "Missing SN_USERNAME env variable")
+        self.assertIsNotNone(self.password, "Missing SN_PASSWORD env variable")
 
-    response = requests.get(url, auth=HTTPBasicAuth(user, password), headers=headers)
+        self.url = f"{self.instance}/api/now/table/incident"
+        self.headers = {
+            "Accept": "application/json"
+        }
 
-    assert response.status_code == 200, f"Failed to connect. Status: {response.status_code}"
-    json_data = response.json()
-    assert "result" in json_data, "Response missing 'result' key"
-    assert isinstance(json_data["result"], list), "'result' is not a list"
+    def test_connection(self):
+        """Test basic authentication and API response from ServiceNow"""
+        response = requests.get(
+            self.url,
+            auth=HTTPBasicAuth(self.username, self.password),
+            headers=self.headers
+        )
+        self.assertEqual(response.status_code, 200, f"Failed to connect. Status: {response.status_code}")
+        json_data = response.json()
+        self.assertIn("result", json_data)
+        self.assertIsInstance(json_data["result"], list)
 
-def test_fetch_incident_fields():
-    """
-    Test if required fields exist in incident records.
-    """
-    instance = os.getenv("SN_INSTANCE")
-    user = os.getenv("SN_USERNAME")
-    password = os.getenv("SN_PASSWORD")
+    def test_incident_fields(self):
+        """Test that essential incident fields exist"""
+        response = requests.get(
+            f"{self.url}?sysparm_limit=1",
+            auth=HTTPBasicAuth(self.username, self.password),
+            headers=self.headers
+        )
+        data = response.json()["result"]
+        self.assertGreater(len(data), 0, "No incident data returned")
+        incident = data[0]
+        for field in ["number", "short_description", "state", "priority"]:
+            self.assertIn(field, incident, f"Missing field: {field}")
 
-    url = f"{instance}/api/now/table/incident?sysparm_limit=1"
-    headers = {
-        "Accept": "application/json"
-    }
-
-    response = requests.get(url, auth=HTTPBasicAuth(user, password), headers=headers)
-    data = response.json()["result"]
-
-    assert len(data) > 0, "No incident data returned"
-    incident = data[0]
-
-    for field in ["number", "short_description", "state", "priority"]:
-        assert field in incident, f"Missing expected field: {field}"
+if __name__ == "__main__":
+    unittest.main()
