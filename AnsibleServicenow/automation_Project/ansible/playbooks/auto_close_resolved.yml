@@ -1,0 +1,54 @@
+---
+- name: Auto-Close Resolved Incidents in ServiceNow
+  hosts: localhost
+  gather_facts: false
+  vars:
+    SN_INSTANCE: "{{ lookup('env', 'SN_INSTANCE') }}"
+    SN_USERNAME: "{{ lookup('env', 'SN_USERNAME') }}"
+    SN_PASSWORD: "{{ lookup('env', 'SN_PASSWORD') }}"
+    FILTER_QUERY: "state=6"   # state=6 means 'Resolved' in ServiceNow
+    CLOSE_STATE: "7"          # state=7 means 'Closed'
+    CLOSE_NOTES: "Auto-closed by Ansible remediation playbook"
+
+  tasks:
+    - name: Fetch Resolved Incidents
+      uri:
+        url: "{{ SN_INSTANCE }}/api/now/table/incident?sysparm_query={{ FILTER_QUERY }}&sysparm_limit=10"
+        method: GET
+        user: "{{ SN_USERNAME }}"
+        password: "{{ SN_PASSWORD }}"
+        force_basic_auth: true
+        status_code: 200
+        headers:
+          Accept: "application/json"
+      register: fetch_result
+
+    - name: Set incident list variable
+      set_fact:
+        resolved_incidents: "{{ fetch_result.json.result }}"
+
+    - name: Display resolved incidents found
+      debug:
+        msg: "Resolved incidents to be closed: {{ resolved_incidents | map(attribute='number') | list }}"
+
+    - name: Auto-close each resolved incident
+      uri:
+        url: "{{ SN_INSTANCE }}/api/now/table/incident/{{ item.sys_id }}"
+        method: PATCH
+        user: "{{ SN_USERNAME }}"
+        password: "{{ SN_PASSWORD }}"
+        force_basic_auth: true
+        status_code: 200
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+        body_format: json
+        body:
+          state: "{{ CLOSE_STATE }}"
+          close_notes: "{{ CLOSE_NOTES }}"
+      loop: "{{ resolved_incidents }}"
+      when: resolved_incidents | length > 0
+
+    - name: Done
+      debug:
+        msg: "All resolved incidents processed."
