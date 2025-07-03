@@ -19,27 +19,22 @@ INCIDENT_API_URL = f"{SN_INSTANCE}/api/now/table/incident"
 FILTER = "state=1^priority=1"  # New and Priority 1 incidents
 
 # Set headers
-HEADERS = {
-    "Accept": "application/json"
-}
+HEADERS = {"Accept": "application/json"}
 
 
 def fetch_incidents():
-    params = {
-        "sysparm_query": FILTER,
-        "sysparm_limit": 10
-    }
+    params = {"sysparm_query": FILTER, "sysparm_limit": 10}
 
     try:
         response = requests.get(
             INCIDENT_API_URL,
             auth=HTTPBasicAuth(SN_USERNAME, SN_PASSWORD),
             headers=HEADERS,
-            params=params
+            params=params,
         )
 
         if response.status_code == 200:
-            incidents = response.json().get('result', [])
+            incidents = response.json().get("result", [])
             print(f"\nFetched {len(incidents)} incident(s):\n")
             for incident in incidents:
                 print(f"Number: {incident['number']}")

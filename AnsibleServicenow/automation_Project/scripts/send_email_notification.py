@@ -14,17 +14,18 @@ EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
 EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER")
 
+
 def send_email_notification(subject, body):
     if not all([EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, EMAIL_RECEIVER]):
         raise Exception("Missing one or more required email environment variables.")
 
     # Compose email
     msg = MIMEMultipart()
-    msg['From'] = EMAIL_USER
-    msg['To'] = EMAIL_RECEIVER
-    msg['Subject'] = subject
+    msg["From"] = EMAIL_USER
+    msg["To"] = EMAIL_RECEIVER
+    msg["Subject"] = subject
 
-    msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(body, "plain"))
 
     try:
         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
@@ -35,8 +36,9 @@ def send_email_notification(subject, body):
     except Exception as e:
         print(f"[ERROR] Failed to send email: {str(e)}")
 
+
 if __name__ == "__main__":
     send_email_notification(
         subject="Incident Auto-Closure Report",
-        body="All resolved ServiceNow incidents have been automatically closed."
+        body="All resolved ServiceNow incidents have been automatically closed.",
     )
