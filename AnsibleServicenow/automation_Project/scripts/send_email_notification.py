@@ -4,8 +4,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# ✅ Load .env file from two levels up
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
+# ✅ Load .env file (hardcoded absolute path for now)
+dotenv_path = "/home/ansiblestart/Observe/AnsibleServicenow/.env"
+print(f"[DEBUG] Loading .env from: {dotenv_path}")
 load_dotenv(dotenv_path=dotenv_path)
 
 # ✅ Read environment variables
