@@ -1,52 +1,41 @@
 import os
+from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from pathlib import Path
-from dotenv import load_dotenv
 
-# Load environment variables from .env
-env_path = Path(__file__).resolve().parents[2] / ".env"
-load_dotenv()
+# ✅ Load .env file from two levels up
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.env'))
+load_dotenv(dotenv_path=dotenv_path)
 
-print("[DEBUG] EMAIL_HOST:", os.getenv("EMAIL_HOST"))
-print("[DEBUG] EMAIL_PORT:", os.getenv("EMAIL_PORT"))
-print("[DEBUG] EMAIL_USER:", os.getenv("EMAIL_USER"))
-print("[DEBUG] EMAIL_PASS:", os.getenv("EMAIL_PASS")[:4] + "****")  # hide full password
-print("[DEBUG] EMAIL_RECEIVER:", os.getenv("EMAIL_RECEIVER"))
-
-# Environment variables
+# ✅ Read environment variables
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
 EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER")
 
+print(f"[DEBUG] EMAIL_HOST: {EMAIL_HOST}")
+print(f"[DEBUG] EMAIL_PORT: {EMAIL_PORT}")
+print(f"[DEBUG] EMAIL_USER: {EMAIL_USER}")
+print(f"[DEBUG] EMAIL_PASS: {'*' * len(EMAIL_PASS) if EMAIL_PASS else 'Not Set'}")
+print(f"[DEBUG] EMAIL_RECEIVER: {EMAIL_RECEIVER}")
 
-def send_email_notification(subject, body):
-    if not all([EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, EMAIL_RECEIVER]):
-        raise Exception("Missing one or more required email environment variables.")
-
-    # Compose email
+# ✅ Send test email
+try:
     msg = MIMEMultipart()
-    msg["From"] = EMAIL_USER
-    msg["To"] = EMAIL_RECEIVER
-    msg["Subject"] = subject
+    msg['From'] = EMAIL_USER
+    msg['To'] = EMAIL_RECEIVER
+    msg['Subject'] = "Test Alert: ServiceNow Closed Incidents"
+    body = "This is a test alert to verify the email configuration."
+    msg.attach(MIMEText(body, 'plain'))
 
-    msg.attach(MIMEText(body, "plain"))
+    server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
+    server.starttls()
+    server.login(EMAIL_USER, EMAIL_PASS)
+    server.sendmail(EMAIL_USER, EMAIL_RECEIVER, msg.as_string())
+    server.quit()
 
-    try:
-        with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
-            server.starttls()
-            server.login(EMAIL_USER, EMAIL_PASS)
-            server.sendmail(EMAIL_USER, EMAIL_RECEIVER, msg.as_string())
-            print(f"[EMAIL SENT] Notification sent to {EMAIL_RECEIVER}")
-    except Exception as e:
-        print(f"[ERROR] Failed to send email: {str(e)}")
-
-
-if __name__ == "__main__":
-    send_email_notification(
-        subject="Incident Auto-Closure Report",
-        body="All resolved ServiceNow incidents have been automatically closed.",
-    )
+    print("[SUCCESS] Email sent successfully.")
+except Exception as e:
+    print(f"[ERROR] Failed to send email: {e}")
