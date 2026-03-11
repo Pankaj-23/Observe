@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: observability-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: observability-app
+  template:
+    metadata:
+      labels:
+        app: observability-app
+    spec:
+      containers:
+      - name: observability-app
+        image: 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
+        ports:
+        - containerPort: 8000
