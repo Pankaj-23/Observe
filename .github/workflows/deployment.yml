@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t observability-app ./docker
+        docker build -t observability-app ./Devops_dev/docker
 
     - name: Tag Image
       run: |
@@ -37,3 +37,4 @@ jobs:
     - name: Push Image to ECR
       run: |
         docker push 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
+
