@@ -17,3 +17,10 @@ spec:
         image: 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
         ports:
         - containerPort: 8000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
