@@ -3,7 +3,7 @@ name: DevOps CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
 
@@ -36,4 +36,4 @@ jobs:
 
     - name: Push Image to ECR
       run: |
-        docker push 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latests
+        docker push 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
