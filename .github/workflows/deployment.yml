@@ -58,6 +58,6 @@ jobs:
       run: |
         aws eks update-kubeconfig --region ap-south-1 --name devops-eks-cluster
 
-    - name: Deploy to Kubernetes
+    - name: Deploy new image to Kubernetes
       run: |
-        kubectl apply -f Devops_dev/kubernetes/
+        kubectl set image deployment/observability-app \ 											observability-app=754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
