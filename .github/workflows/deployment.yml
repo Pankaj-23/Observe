@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t observability-app ./Devops_dev/docker
+        docker build -t observability-app .
 
     - name: Tag Image
       run: |
