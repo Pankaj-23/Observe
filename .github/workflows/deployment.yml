@@ -28,15 +28,15 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t observability-app -f Devops_dev/docker/Dockerfile Devops_dev
+        docker build -t observability-app:${{ github.sha }} -f Devops_dev/docker/Dockerfile Devops_dev
 
     - name: Tag Image
       run: |
-        docker tag observability-app:latest 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
+        docker tag observability-app:${{ github.sha }} 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
 
     - name: Push Image to ECR
       run: |
-        docker push 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
+        docker push 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
 
 
   deploy:
