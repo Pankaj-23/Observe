@@ -38,25 +38,26 @@ jobs:
       run: |
         docker push 754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:latest
 
-deploy:
-  needs: build
-  runs-on: ubuntu-latest
 
-  steps:
-  - name: Checkout Code
-    uses: actions/checkout@v4
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
-  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@v4
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-      aws-region: ap-south-1
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-  - name: Update kubeconfig
-    run: |
-      aws eks update-kubeconfig --region ap-south-1 --name devops-eks-cluster
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: ap-south-1
 
-  - name: Deploy to Kubernetes
-    run: |
-      kubectl apply -f Devops_dev/kubernetes/
+    - name: Update kubeconfig
+      run: |
+        aws eks update-kubeconfig --region ap-south-1 --name devops-eks-cluster
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f Devops_dev/kubernetes/
