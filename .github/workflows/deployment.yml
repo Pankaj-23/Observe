@@ -3,6 +3,8 @@ name: DevOps CI/CD Pipeline
 on:
   push:
     branches:
+      - dev
+      - staging
       - master
 
 jobs:
@@ -57,6 +59,34 @@ jobs:
         run: |
           aws eks update-kubeconfig --region ap-south-1 --name devops-eks-cluster
 
-      - name: Deploy new image to Kubernetes
+      # DEV DEPLOYMENT
+      - name: Deploy to Dev Environment
+        if: github.ref == 'refs/heads/dev'
         run: |
-          kubectl set image deployment/observability-app observability-app=754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
+          kubectl set image deployment/observability-app-dev \
+          observability-app=754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
+
+      # STAGING DEPLOYMENT
+      - name: Deploy to Staging Environment
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          kubectl set image deployment/observability-app-staging \
+          observability-app=754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
+
+      # PRODUCTION DEPLOYMENT
+      - name: Deploy to Production Environment
+        if: github.ref == 'refs/heads/master'
+        run: |
+          kubectl set image deployment/observability-app \
+          observability-app=754317098062.dkr.ecr.ap-south-1.amazonaws.com/observability-app:${{ github.sha }}
+
+      # VERIFY DEPLOYMENT
+      - name: Verify rollout
+        run: |
+          kubectl rollout status deployment/observability-app --timeout=120s
+
+      # AUTOMATIC ROLLBACK
+      - name: Rollback if deployment fails
+        if: failure()
+        run: |
+          kubectl rollout undo deployment/observability-app
