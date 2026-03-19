@@ -2,9 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: observability-ingress
-  annotations:
-    kubernetes.io/ingress.class: alb
 spec:
+  ingressClassName: alb
   rules:
   - http:
       paths:
@@ -12,6 +11,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: observability-app
+            name: observability-service
             port:
               number: 80
